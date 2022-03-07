@@ -21,9 +21,7 @@ def affiliated_univ(DOI):
         break
     return affiliation
 
-
 ## TO READ IN WEATHER JSON
-
 ''' example row:
  
 "CA-001":
@@ -70,46 +68,7 @@ for i in state_codes:
   anomaly = state_codes[i]["anomaly"]
   anomaly_lst.append(anomaly)
 
-
-
-#weather features
-def rank_weather(all_county, all_state, rank_lst, county_list, state_list):
-  rank_match = []
-  for i in range(len(county_list)):
-    for j in range(len(all_county)):
-      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
-        rank_match.append(rank_lst[j])
-    if len(rank_match) == i:
-      rank_match.append('NaN') 
-  return rank_match
-
-def temp_weather(all_county, all_state, temp_lst, county_list, state_list):
-  temp_match = []
-  for i in range(len(county_list)):
-    for j in range(len(all_county)):
-      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
-        temp_match.append(temp_lst[j])
-    if len(temp_match) == i:
-      temp_match.append('NaN') 
-  return temp_match
-
-def anomaly_weather(all_county, all_state, anomaly_lst, county_list, state_list):
-  anomaly_match = []
-  for i in range(len(county_list)):
-    for j in range(len(all_county)):
-      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
-        anomaly_match.append(anomaly_lst[j])
-    if len(anomaly_match) == i:
-      anomaly_match.append('NaN') 
-  return anomaly_match
-
-print(len(rank_weather(all_county, all_state, anomaly_lst, county_list, state_list)))
-
-
-
 #final block
-
-
 import pandas as pd
 import csv
 
@@ -118,7 +77,6 @@ name=df3['NAME'].tolist()
 df = pd.read_csv("Modified Bik dataset - papers with endpoint reached.tsv", sep='\t', encoding = "ISO-8859-1", nrows=214)
 lst_univs=df['Affiliation University'].tolist()
 herd_rank = pd.read_excel('HERDrankings.xlsx', header =[2,3])
-
 
 def univ_clean(lst_univs, name):
 
@@ -210,9 +168,6 @@ def R_D_exp(univ):
         if univ in tup[0]:
             return tup[1]
 
-
-
-
 #adding all features to the bik dataset 
 from pandas._libs.algos import rank_1d
 county_list=[]
@@ -221,7 +176,6 @@ state_list=[]
 R_D_rank_list=[]
 percentile_list=[]
 R_D_exp_list=[]
-
 
 univ_c = univ_clean(lst_univs, name)
 
@@ -241,13 +195,34 @@ for univ in univ_c:
         percentile_list.append(percentile(univ))
         R_D_exp_list.append(R_D_exp(univ))
 
-df['County']=county_list
-df['Locale']=locale_list
-df['State']=state_list
-df['R&D Rank']=R_D_rank_list
-df['Percentile']=percentile_list
-df['R&D Expenditures']=R_D_exp_list
-
+#weather features
+def rank_weather(all_county, all_state, rank_lst, county_list, state_list):
+  rank_match = []
+  for i in range(len(county_list)):
+    for j in range(len(all_county)):
+      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
+        rank_match.append(rank_lst[j])
+    if len(rank_match) == i:
+      rank_match.append('NaN') 
+  return rank_match
+def temp_weather(all_county, all_state, temp_lst, county_list, state_list):
+  temp_match = []
+  for i in range(len(county_list)):
+    for j in range(len(all_county)):
+      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
+        temp_match.append(temp_lst[j])
+    if len(temp_match) == i:
+      temp_match.append('NaN') 
+  return temp_match
+def anomaly_weather(all_county, all_state, anomaly_lst, county_list, state_list):
+  anomaly_match = []
+  for i in range(len(county_list)):
+    for j in range(len(all_county)):
+      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
+        anomaly_match.append(anomaly_lst[j])
+    if len(anomaly_match) == i:
+      anomaly_match.append('NaN') 
+  return anomaly_match
 
 rank_final=rank_weather(all_county, all_state, anomaly_lst, county_list, state_list)
 temp_final=temp_weather(all_county, all_state, anomaly_lst, county_list, state_list)
@@ -255,5 +230,13 @@ anomaly_final=anomaly_weather(all_county, all_state, anomaly_lst, county_list, s
 df['Rank']=rank_final
 df['Temperature']=temp_final
 df['Anomaly']=anomaly_final
+
+df['County']=county_list
+df['Locale']=locale_list
+df['State']=state_list
+df['R&D Rank']=R_D_rank_list
+df['Percentile']=percentile_list
+df['R&D Expenditures']=R_D_exp_list
+
 df.drop(df.columns[df.columns.str.contains('unnamed',case = False)],axis = 1, inplace = True)
 df.to_csv('Final_bik_dataset.tsv',sep ='\t') 
