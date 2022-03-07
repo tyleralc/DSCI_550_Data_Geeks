@@ -71,42 +71,6 @@ for i in state_codes:
   anomaly_lst.append(anomaly)
 
 
-
-#weather features
-def rank_weather(all_county, all_state, rank_lst, county_list, state_list):
-  rank_match = []
-  for i in range(len(county_list)):
-    for j in range(len(all_county)):
-      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
-        rank_match.append(rank_lst[j])
-    if len(rank_match) == i:
-      rank_match.append('NaN') 
-  return rank_match
-
-def temp_weather(all_county, all_state, temp_lst, county_list, state_list):
-  temp_match = []
-  for i in range(len(county_list)):
-    for j in range(len(all_county)):
-      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
-        temp_match.append(temp_lst[j])
-    if len(temp_match) == i:
-      temp_match.append('NaN') 
-  return temp_match
-
-def anomaly_weather(all_county, all_state, anomaly_lst, county_list, state_list):
-  anomaly_match = []
-  for i in range(len(county_list)):
-    for j in range(len(all_county)):
-      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
-        anomaly_match.append(anomaly_lst[j])
-    if len(anomaly_match) == i:
-      anomaly_match.append('NaN') 
-  return anomaly_match
-
-print(len(rank_weather(all_county, all_state, anomaly_lst, county_list, state_list)))
-
-
-
 #final block
 
 
@@ -247,6 +211,38 @@ df['State']=state_list
 df['R&D Rank']=R_D_rank_list
 df['Percentile']=percentile_list
 df['R&D Expenditures']=R_D_exp_list
+
+
+#weather features
+def rank_weather(all_county, all_state, rank_lst, county_list, state_list):
+  rank_match = []
+  for i in range(len(county_list)):
+    for j in range(len(all_county)):
+      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
+        rank_match.append(rank_lst[j])
+    if len(rank_match) == i:
+      rank_match.append('NaN') 
+  return rank_match
+
+def temp_weather(all_county, all_state, temp_lst, county_list, state_list):
+  temp_match = []
+  for i in range(len(county_list)):
+    for j in range(len(all_county)):
+      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
+        temp_match.append(temp_lst[j])
+    if len(temp_match) == i:
+      temp_match.append('NaN') 
+  return temp_match
+
+def anomaly_weather(all_county, all_state, anomaly_lst, county_list, state_list):
+  anomaly_match = []
+  for i in range(len(county_list)):
+    for j in range(len(all_county)):
+      if county_list[i] == all_county[j] and state_list[i] == all_state[j]:
+        anomaly_match.append(anomaly_lst[j])
+    if len(anomaly_match) == i:
+      anomaly_match.append('NaN') 
+  return anomaly_match
 
 
 rank_final=rank_weather(all_county, all_state, anomaly_lst, county_list, state_list)
