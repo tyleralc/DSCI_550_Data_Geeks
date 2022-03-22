@@ -5,7 +5,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+#from webdriver_manager.chrome import ChromeDriverManager
 
 
 def download_file(DOI):                    #(file_path, DOI):
@@ -22,14 +22,17 @@ def download_file(DOI):                    #(file_path, DOI):
 
     #set chromedriver.exe path
     #driver = webdriver.Chrome(executable_path="C:\\chromedriver.exe", options=op)
+    
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     #maximize browser
     driver.maximize_window()
     #launch URL
     driver.get(f"https://libraries.usc.edu/search/all?query={DOI}");
     #click download link
-    l = driver.find_element_by_link_text("dl-article")
-    l.click() 
+    # l = driver.find_element_by_link_text("dl-article")
+    # l.click() 
+    search_input = driver.find_element_by_css_selector('#Articles > div > div > ul > li:nth-child(1) > article > div.search-bento-item__content > div.flex > div.links > a > span:nth-child(2)')
+    search_input.click()
 
 
 # try:
