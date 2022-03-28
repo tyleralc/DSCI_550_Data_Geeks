@@ -48,7 +48,7 @@ ser = Service(r"C:\Users\Tyler Alcorn\OneDrive - University of Southern Californ
 driver = webdriver.Chrome(options=chrome_options, service=ser)
 
 # change the <path_to_place_downloaded_file> to your directory where you would like to place the downloaded file
-download_dir = r"C:\Users\Tyler Alcorn\OneDrive - University of Southern California\Documents\GitHub\DSCI_550_Data_Geeks\HW2\pdfs"
+#download_dir = r"C:\Users\Tyler Alcorn\OneDrive - University of Southern California\Documents\GitHub\DSCI_550_Data_Geeks\HW2\pdfs"
 
 # function to handle setting up headless download
 enable_download_headless(driver, download_dir)
@@ -100,31 +100,23 @@ def get_pdfs(DOI):
     except: #NoSuchElementException:
         print('failed')
 
-
-def tiny_file_rename(newname, folder_of_download, time_to_wait=60):
-    time_counter = 0
-    filename = max([f for f in os.listdir(folder_of_download)], key=lambda xa:os.path.getctime(os.path.join(folder_of_download,xa)))
-    while '.part' in filename:
-        time.sleep(1)
-        time_counter += 1
-        if time_counter > time_to_wait:
-            raise Exception('Waited too long for file to download')
-    filename = max([f for f in os.listdir(folder_of_download)], key=lambda xa :   os.path.getctime(os.path.join(folder_of_download,xa)))
-    os.rename(os.path.join(folder_of_download, filename), os.path.join(folder_of_download, newname))
-
-
-for i in first5_doi:
-    get_pdfs(first5_doi)
-    time.sleep(15)
+for i in doi:
+    get_pdfs(i)
+    time.sleep(5)
+    #check if a file.pdf is present and if it is equal to the old_name then do the rename functions 
     old_name= r'C:\Users\Tyler Alcorn\OneDrive - University of Southern California\Documents\GitHub\DSCI_550_Data_Geeks\HW2\pdfs\file.pdf'
-    new_path= r'C:\Users\Tyler Alcorn\OneDrive - University of Southern California\Documents\GitHub\DSCI_550_Data_Geeks\HW2\pdfs\ '
-    file_name= str(i)
-    new_name =new_path+file_name
-    os.rename(old_name, new_name)
-    #tiny_file_rename(str(i)+'.pdf', download_dir, time_to_wait=60)
+    new_path= r'C:\Users\Tyler Alcorn\OneDrive - University of Southern California\Documents\GitHub\DSCI_550_Data_Geeks\HW2\pdfs'
+
+    i=i.replace('/', '_')
+    try:
+        
+        file_name= '\\' +str(i)+'.pdf'
+        new_name =new_path+file_name
+        os.rename(old_name, new_name)
+        
+    except:
+        print('not name file.pdf')
+    i=i.replace('_', '/')
     doi_index_number = doi.index(i) + 1
     doi_length = str(len(doi))
     print(f"{doi_index_number} out of {doi_length}")
-
-print(first5_doi)
-
